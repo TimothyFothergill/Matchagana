@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>MATCHAGANA - Match Hiragana to Romaji</title>
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="static/style.css">
+    </head>
+    <body>
+        <a class="logo" href="/"><img src="static/Matchagana logo 2.png" alt="Matchagana Logo" height="280" width="640"></a>
+        <div class="float-right">
+            Your score: {{ score }}
+        </div>
+        <div class="content">
+            <h1>Match Hiragana to Romaji</h1>
+        </div>
+        <div class="content">
+            <h2 class="hiragana"> {{ next_hiragana }} </h2>
+            <form method="POST">
+                <p>Choose the correct Romaji</p>
+                <input value="{{ romaji_one }}" name="button" type="submit" onclick="await_player()" class="input_button">1</input>
+                <input value="{{ romaji_two }}" name="button" type="submit" onclick="await_player()" class="input_button">2</input>
+                <input value="{{ romaji_three }}" name="button" type="submit" onclick="await_player()" class="input_button">3</input>
+            </form>
+            <br />
+            <p>Choose the correct Romaji to match the Hiragana. Earn points and memorise Hiragana!</p>
+            <p></p>
+        </div>
+    </body>
+</html>
