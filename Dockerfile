@@ -1,2 +1,3 @@
-#COMMENT
-RUN echo "We are running some # of cool things"
+FROM python
+COPY . .
+RUN flask run

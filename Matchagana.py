@@ -5,6 +5,17 @@ app = Flask(__name__)
 app.secret_key = "IbXd)K=gWm/6TAc"
 
 
+@app.route("/api/hiragana", methods=["GET"])
+def api_hiragana():
+
+    return {
+        "hiragana": {
+            "Hiragana": hiragana_list,
+            "Romaji": romaji_list
+            }
+    }
+
+
 class GameLoop:
 
     @app.route("/start")
@@ -38,6 +49,10 @@ class GameLoop:
         score = curr_round.score
         curr_round.score = 0
         curr_round.rounds = 10
+
+        if request.form.get("leaderboard"):
+            pass
+
         return render_template("arigatou.html", score=score)
 
     def game_logic(self, score, match, fail):
@@ -54,6 +69,7 @@ class GameLoop:
         print(str(next_hiragana))
         print("Which of these is the matching Romaji?")
 
+        # TODO: Fix. This catches if there's a duplicate romaji and re-rolls. If it fails, it goes to 3rd slot.
         loopcatcher = 1
         while loopcatcher == 1:
             while random_int_2 == random_int or random_int_2 == random_int_3:
@@ -79,6 +95,8 @@ class GameLoop:
         if romaji_one != correct_hiragana_object.romaji and romaji_two != correct_hiragana_object.romaji \
                 and romaji_three != correct_hiragana_object.romaji:
             romaji_three = correct_hiragana_object.romaji
+
+        # END TODO
 
         print(romaji_one + " " + romaji_two + " " + romaji_three)
 
@@ -163,7 +181,12 @@ class CurrentRound:
 class Hiragana:
     # Hiragana class, contains romaji and hiragana
     def __init__(self, romaji):
-        self.romaji = romaji
+        if romaji == "ti":
+            self.romaji = "ti/chi"
+        elif romaji == "si":
+            self.romaji = "si/shi"
+        else:
+            self.romaji = romaji
         self.hiragana = unicodedata.lookup("HIRAGANA LETTER " + str(romaji).upper())
 
 
@@ -286,7 +309,7 @@ object_list += [a, i, u, e, o, ka, ga, ku, gu,
                 ro, wa, wi, we, wo, n, vu]
 
 for ele in object_list:
-    romaji_list += ele.romaji
+    romaji_list.append(ele.romaji)
     hiragana_list += ele.hiragana
 
 if __name__ == "__main__":
