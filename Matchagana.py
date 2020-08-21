@@ -1,13 +1,17 @@
 import unicodedata
 import random
+import pymongo
 from flask import Flask, render_template, request, redirect, flash
 app = Flask(__name__)
 app.secret_key = "IbXd)K=gWm/6TAc"
 
+client = pymongo.MongoClient()
+db = client["Matchagana-Scores"]
+col = db["Hi-Scores"]
+
 
 @app.route("/api/hiragana", methods=["GET"])
 def api_hiragana():
-
     return {
         "hiragana": {
             "Hiragana": hiragana_list,
@@ -49,11 +53,12 @@ class GameLoop:
         score = curr_round.score
         curr_round.score = 0
         curr_round.rounds = 10
-
-        if request.form.get("leaderboard"):
-            pass
-
         return render_template("arigatou.html", score=score)
+
+    @app.route("/score-submitted")
+    def player_submit_score(self):
+
+        return render_template("score-submitted.html")
 
     def game_logic(self, score, match, fail):
         print("RUNNING GAME_LOGIC")
@@ -208,9 +213,18 @@ def on_start():
     return render_template("index.html", hiragana_character=hiragana_character)
 
 
+class MatchaganaDB:
+    @staticmethod
+    def add_scores(self, player_name, email_address, score, time_taken):
+        col.insert_one({"player_name": player_name, "email_address": email_address, "score": score,
+                        "time_taken": time_taken})
+        return "record added"
+
+    def remove_scores(self):
+        pass
+
+
 # Game state setup and extras.
-
-
 curr_round = CurrentRound(0, "", "", "", "", 0, 0, Hiragana("a"), 10)
 
 hiragana_list = []
