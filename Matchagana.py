@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, flash
 app = Flask(__name__)
 app.secret_key = "IbXd)K=gWm/6TAc"
 
-client = pymongo.MongoClient()
+client = pymongo.MongoClient("")
 db = client["Matchagana-Scores"]
 col = db["Hi-Scores"]
 
