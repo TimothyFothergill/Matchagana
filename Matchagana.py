@@ -1,11 +1,12 @@
 import unicodedata
 import random
 import pymongo
+
 from flask import Flask, render_template, request, redirect, flash
 app = Flask(__name__)
 app.secret_key = "IbXd)K=gWm/6TAc"
 
-client = pymongo.MongoClient("")
+client = pymongo.MongoClient()
 db = client["Matchagana-Scores"]
 col = db["Hi-Scores"]
 
@@ -53,12 +54,17 @@ class GameLoop:
         score = curr_round.score
         curr_round.score = 0
         curr_round.rounds = 10
+        if request.method == "POST":
+            p_name = request.form.get("leaderboard")
+            GameLoop.player_submit_score(self, p_name, score)
+            return render_template("score-submitted.html")
         return render_template("arigatou.html", score=score)
 
     @app.route("/score-submitted")
-    def player_submit_score(self):
-
-        return render_template("score-submitted.html")
+    def player_submit_score(self, p_name, p_score):
+        col.insert_one({"player_name": p_name, "score": p_score})
+        print("Player score submitted to DB")
+        return None
 
     def game_logic(self, score, match, fail):
         print("RUNNING GAME_LOGIC")
@@ -327,4 +333,4 @@ for ele in object_list:
     hiragana_list += ele.hiragana
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", debug=True)

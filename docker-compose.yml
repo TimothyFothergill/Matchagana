@@ -1,16 +1,27 @@
+version: "3.3"
 services:
   matchagana-app:
-    build: .
+    build:
+      context: .
+    container_name: matchagana-app
+    image: digitalocean.com/flask-python:3.6
+    env_file:
+      - ./.env
+    environment:
+
+      networks:
+        - matchagana-network
     ports:
-      - "8080:80"
-    networks:
-      - matchagana-network
+      - "5000:5000"
 
   matchagana-db:
     image: mongo:latest
-    volumes: ./data/db/:/data/db/
     networks:
       - matchagana-network
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/db/:/data/db/
 
 networks:
   matchagana-network:

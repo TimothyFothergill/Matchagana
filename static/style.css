@@ -45,10 +45,11 @@ img {
 
 }
 .smol {
-    font-size: 10px;
+    font-size: 14px;
+    color: white;
 }
 .flashes {
-    background-color: white;
+    background-color: rgba(212, 175, 55, 0.1);
     width: 200px;
     height: 100px;
 }
