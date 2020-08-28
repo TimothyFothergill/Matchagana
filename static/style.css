@@ -47,3 +47,8 @@ img {
 .smol {
     font-size: 10px;
 }
+.flashes {
+    background-color: white;
+    width: 200px;
+    height: 100px;
+}

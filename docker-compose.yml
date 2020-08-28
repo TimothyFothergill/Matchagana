@@ -1,0 +1,16 @@
+services:
+  matchagana-app:
+    build: .
+    ports:
+      - "8080:80"
+    networks:
+      - matchagana-network
+
+  matchagana-db:
+    image: mongo:latest
+    volumes: ./data/db/:/data/db/
+    networks:
+      - matchagana-network
+
+networks:
+  matchagana-network:
