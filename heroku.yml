@@ -1,5 +1,7 @@
 build:
     docker:
         web: Dockerfile
+    db:
+
 run:
     web: python3 Matchagana.py
