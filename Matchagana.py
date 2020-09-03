@@ -1,14 +1,18 @@
 import unicodedata
 import random
 import pymongo
+from datetime import datetime
 
 from flask import Flask, render_template, request, redirect, flash
 app = Flask(__name__)
 app.secret_key = "IbXd)K=gWm/6TAc"
 
-client = pymongo.MongoClient()
+client = pymongo.MongoClient(host="matchagana-db", port=27017)
 db = client["Matchagana-Scores"]
 col = db["Hi-Scores"]
+
+now = datetime.now()
+current_time = now.strftime("%d/%m/%Y %H:%M:%S")
 
 
 @app.route("/api/hiragana", methods=["GET"])
@@ -49,6 +53,7 @@ class GameLoop:
         print("Your total score was: " + str(score))
 
     @staticmethod
+    @app.route("/arigatou", methods=["GET", "POST"])
     def end_game(self, score):
         print("RUNNING END_GAME")
         score = curr_round.score
@@ -56,15 +61,15 @@ class GameLoop:
         curr_round.rounds = 10
         if request.method == "POST":
             p_name = request.form.get("leaderboard")
-            GameLoop.player_submit_score(self, p_name, score)
+            GameLoop.player_submit_score(self, p_name, score, "Hiragana")
             return render_template("score-submitted.html")
         return render_template("arigatou.html", score=score)
 
     @app.route("/score-submitted")
-    def player_submit_score(self, p_name, p_score):
-        col.insert_one({"player_name": p_name, "score": p_score})
+    def player_submit_score(self, p_name, p_score, game_type):
+        col.insert_one({"player_name": p_name, "score": p_score, "game_type": game_type, "date/time: ": current_time})
         print("Player score submitted to DB")
-        return None
+        return 1
 
     def game_logic(self, score, match, fail):
         print("RUNNING GAME_LOGIC")
@@ -217,17 +222,6 @@ def on_start():
     hiragana_character += ga.hiragana
     hiragana_character += na.hiragana
     return render_template("index.html", hiragana_character=hiragana_character)
-
-
-class MatchaganaDB:
-    @staticmethod
-    def add_scores(self, player_name, email_address, score, time_taken):
-        col.insert_one({"player_name": player_name, "email_address": email_address, "score": score,
-                        "time_taken": time_taken})
-        return "record added"
-
-    def remove_scores(self):
-        pass
 
 
 # Game state setup and extras.
