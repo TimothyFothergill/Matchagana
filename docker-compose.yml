@@ -13,8 +13,8 @@ services:
 #      - MONGO_HOST=matchagana-db
 #      - MONGO_PORT=$DATABASE_PORT
 #      - MONGO_DB=$DATABASE
-    ports:
-      - "5000:5000"
+#    ports:
+#      - "5000:5000"
 
   matchagana-db:
     image: mongo:latest
@@ -27,7 +27,7 @@ services:
 #      - DATABASE_USERNAME=$DATABASE_USERNAME
 #      - DATABASE_PASSWORD=$DATABASE_PASSWORD
 #      - MONGO_PORT=$DATABASE_PORT
-    ports:
-      - "27017:27017"
+#    ports:
+#      - "27017:27017"
     volumes:
       - ./data/db/:/data/db/
