@@ -50,6 +50,8 @@ img {
 }
 .flashes {
     background-color: rgba(212, 175, 55, 0.1);
+    color: white;
+    font-size: 18px;
     width: 200px;
     height: 100px;
 }
