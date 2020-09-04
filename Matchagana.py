@@ -60,17 +60,17 @@ class GameLoop:
         score = curr_round.score
         curr_round.score = 0
         curr_round.rounds = 10
-        if request.method == "POST":
-            p_name = request.form.get("leaderboard")
-            GameLoop.player_submit_score(self, p_name, score, "Hiragana")
-            return render_template("score-submitted.html")
+        # if request.method == "POST":
+        #     p_name = request.form.get("leaderboard")
+        #     GameLoop.player_submit_score(self, p_name, score, "Hiragana")
+        #     return render_template("score-submitted.html")
         return render_template("arigatou.html", score=score)
 
-    @app.route("/score-submitted")
-    def player_submit_score(self, p_name, p_score, game_type):
-        col.insert_one({"player_name": p_name, "score": p_score, "game_type": game_type, "date/time: ": current_time})
-        print("Player score submitted to DB")
-        return 1
+    # @app.route("/score-submitted")
+    # def player_submit_score(self, p_name, p_score, game_type):
+    #     col.insert_one({"player_name": p_name, "score": p_score, "game_type": game_type, "date/time: ": current_time})
+    #     print("Player score submitted to DB")
+    #     return 1
 
     def game_logic(self, score, match, fail):
         print("RUNNING GAME_LOGIC")
