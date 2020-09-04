@@ -201,7 +201,7 @@ class Hiragana:
         if romaji == "ti":
             self.romaji = "chi"
         elif romaji == "si":
-            self.romaji = "si/shi"
+            self.romaji = "shi"
         elif romaji == "hu":
             self.romaji = "fu"
         elif romaji == "zi":
