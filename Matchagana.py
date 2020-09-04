@@ -199,9 +199,13 @@ class Hiragana:
     # Hiragana class, contains romaji and hiragana
     def __init__(self, romaji):
         if romaji == "ti":
-            self.romaji = "ti/chi"
+            self.romaji = "chi"
         elif romaji == "si":
             self.romaji = "si/shi"
+        elif romaji == "hu":
+            self.romaji = "fu"
+        elif romaji == "zi":
+            self.romaji = "ji"
         else:
             self.romaji = romaji
         self.hiragana = unicodedata.lookup("HIRAGANA LETTER " + str(romaji).upper())
@@ -299,11 +303,8 @@ ru = Hiragana("ru")
 re = Hiragana("re")
 ro = Hiragana("ro")
 wa = Hiragana("wa")
-wi = Hiragana("wi")
-we = Hiragana("we")
 wo = Hiragana("wo")
 n = Hiragana("n")
-vu = Hiragana("vu")
 
 ohayo = ""
 ohayo += Hiragana("o").hiragana
@@ -321,7 +322,7 @@ object_list += [a, i, u, e, o, ka, ga, ku, gu,
                 hi, bi, pi, hu, bu, pu, he, be,
                 pe, ho, bo, po, ma, mi, mu, me,
                 mo, ya, yu, yo, ra, ri, ru, re,
-                ro, wa, wi, we, wo, n, vu]
+                ro, wa, wo, n]
 
 for ele in object_list:
     romaji_list.append(ele.romaji)
