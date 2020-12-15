@@ -1,6 +1,6 @@
 import unicodedata
 import random
-import pymongo
+import psycopg2
 import os
 from datetime import datetime
 
@@ -8,9 +8,9 @@ from flask import Flask, render_template, request, redirect, flash
 app = Flask(__name__)
 app.secret_key = "IbXd)K=gWm/6TAc"
 
-client = pymongo.MongoClient(host="matchagana-db", port=27017)
-db = client["Matchagana-Scores"]
-col = db["Hi-Scores"]
+connection = psycopg2.connect(host='matchagana-db', user='matchadb', password='matchadb', port=5432)
+
+cursor = connection.cursor()
 
 now = datetime.now()
 current_time = now.strftime("%d/%m/%Y %H:%M:%S")
@@ -21,7 +21,8 @@ def api_hiragana():
     return {
         "hiragana": {
             "Hiragana": hiragana_list,
-            "Romaji": romaji_list
+            "Romaji": romaji_list,
+            "Hiragana Image": "Hai"
             }
     }
 
@@ -37,6 +38,8 @@ class GameLoop:
         returned_objects = GameLoop.start_game(GameLoop(), limit, score, match, fail)
         print("RETURNED OBJECTS: " + str(returned_objects))
         if str(returned_objects) == "None":
+            cursor.execute("""INSERT INTO matchadb (name, score) VALUES ('Test Entry', '1000');""")
+            # This execute is in the wrong place, but want to check it happens.
             return GameLoop.end_game(GameLoop(), curr_round.score)
         else:
             next_hiragana = returned_objects[0]
@@ -57,20 +60,21 @@ class GameLoop:
     @app.route("/arigatou", methods=["GET", "POST"])
     def end_game(self, score):
         print("RUNNING END_GAME")
-        score = curr_round.score
+        final_score = curr_round.score
         curr_round.score = 0
         curr_round.rounds = 10
+
         # if request.method == "POST":
         #     p_name = request.form.get("leaderboard")
         #     GameLoop.player_submit_score(self, p_name, score, "Hiragana")
         #     return render_template("score-submitted.html")
-        return render_template("arigatou.html", score=score)
+        return render_template("arigatou.html", score=final_score)
 
-    # @app.route("/score-submitted")
-    # def player_submit_score(self, p_name, p_score, game_type):
-    #     col.insert_one({"player_name": p_name, "score": p_score, "game_type": game_type, "date/time: ": current_time})
-    #     print("Player score submitted to DB")
-    #     return 1
+    @app.route("/score-submitted")
+    def player_submit_score(self, p_name, p_score, game_type):
+        # col.insert_one({"player_name": p_name, "score": p_score, "game_type": game_type, "date/time: ": current_time})
+        print("Player score submitted to DB")
+        return 1
 
     def game_logic(self, score, match, fail):
         print("RUNNING GAME_LOGIC")
@@ -227,6 +231,16 @@ def on_start():
     hiragana_character += ga.hiragana
     hiragana_character += na.hiragana
     return render_template("index.html", hiragana_character=hiragana_character)
+
+
+@app.route("/about", methods=["GET"])
+def about_page():
+    return render_template("about.html")
+
+
+@app.route("/hiraganachar", methods=["GET"])
+def hiragana_char_page():
+    return render_template("hiragana.html", hiragana_list=hiragana_list, romaji_list=romaji_list)
 
 
 # Game state setup and extras.

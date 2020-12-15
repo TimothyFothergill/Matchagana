@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>MATCHAGANA - Match Hiragana to Romaji</title>
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="static/style.css">
+        <link rel="shortcut icon" type="image/x-icon" href="static/Matchagana Favicon.ico"/>
+    </head>
+    <body>
+        {% include "header.html" %}
+        <div class="content">
+            <p class="hiragana">
+                {{ hiragana_list }} {{romaji_list}}
+            </p>
+            <br />
+            The below characters are all of the Hiragana characters used in Matchagana and a few extras.
+            <p class="hiragana">
+                あ 	い 	う 	え 	お
+                か 	き 	く 	け 	こ
+                が 	ぎ 	ぐ 	げ 	ご
+                さ 	し 	す 	せ 	そ
+                ざ 	じ 	ず 	ぜ 	ぞ
+                た 	ち 	つ 	て 	と
+                だ 	ぢ 	づ 	で 	ど
+                な 	に 	ぬ 	ね 	の
+                は 	ひ 	ふ 	へ 	ほ
+                ば 	び 	ぶ 	べ 	ぼ
+                ぱ 	ぴ 	ぷ 	ぺ 	ぽ
+                ま 	み 	む 	め 	も
+                や 		ゆ 		よ
+                ら 	り 	る 	れ 	ろ
+                わ 	ゐ 		ゑ 	を
+                ん
+                っ 	ゝ 	゛ 	゜
+            </p>
+        </div>
+    {% include "footer.html" %}
+    </body>
+</html>

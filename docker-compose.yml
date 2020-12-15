@@ -1,33 +1,45 @@
 version: "3.3"
 services:
   matchagana-app:
-    image: matchagana
+    image: matchagana-app
     build:
       context: .
+    links:
+      - matchagana-db
     container_name: matchagana-app
-#    env_file:
-#      - ./.env
-#    environment:
-#      - MONGO_USERNAME=$DATABASE_USERNAME
-#      - MONGO_PASSWORD=$DATABASE_PASSWORD
-#      - MONGO_HOST=matchagana-db
-#      - MONGO_PORT=$DATABASE_PORT
-#      - MONGO_DB=$DATABASE
-#    ports:
-#      - "5000:5000"
+    ports:
+      - "5000:5000"
+    networks:
+      - matcha_network
+    depends_on:
+      - matchagana-db
 
   matchagana-db:
-    image: mongo:latest
-    container_name: matchagana-db
-#    env_file: .env
-#    environment:
-#      - MONGO_INITDB_ROOT_USERNAME=$DATABASE_ROOT_USERNAME
-#      - MONGO_INITDB_ROOT_PASSWORD=$DATABASE_ROOT_PASSWORD
-#      - MONGO_INITDB_DATABASE=$DATABASE
-#      - DATABASE_USERNAME=$DATABASE_USERNAME
-#      - DATABASE_PASSWORD=$DATABASE_PASSWORD
-#      - MONGO_PORT=$DATABASE_PORT
-    ports:
-      - "27017:27017"
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: matchadb
+      POSTGRES_USER: matchadb
+      POSTGRES_PASSWORD: matchadb
     volumes:
-      - ./data/db/:/data/db/
+      - matcha_volume:/var/lib/postgresql/data
+    ports:
+    - "5432:5432"
+    expose:
+      - "5432"
+    networks:
+      - matcha_network
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - matcha_network
+
+volumes:
+  matcha_volume: {}
+
+networks:
+  matcha_network:

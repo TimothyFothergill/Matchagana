@@ -7,19 +7,17 @@
         <link rel="shortcut icon" type="image/x-icon" href="static/Matchagana Favicon.ico"/>
     </head>
     <body>
-        <a class="logo" href="/"><img src="static/Matchagana logo 2.png" alt="Matchagana Logo" height="280" width="640"></a>
-        <div class="float-right">
-            Your score: {{ score }}
-        </div>
+        {% include "header.html" %}
         <div class="content">
+            <div class="float-right">
+                Your score: {{ score }}
+            </div>
+            <div class="flashes">
+                {% for message in get_flashed_messages() %}
+                    {{ message }}
+                {% endfor %}
+            </div>
             <h1>Match Hiragana to Romaji</h1>
-        </div>
-        <div class="flashes">
-          {% for message in get_flashed_messages() %}
-            {{ message }}
-          {% endfor %}
-        </div>
-        <div class="content">
             <h2 class="hiragana"> {{ next_hiragana }} </h2>
             <form method="POST">
                 <p>Choose the correct Romaji</p>
@@ -31,5 +29,6 @@
             <p>Choose the correct Romaji to match the Hiragana. Earn points and memorise Hiragana!</p>
             <p></p>
         </div>
-    </body>
+        {% include "footer.html" %}
+     </body>
 </html>

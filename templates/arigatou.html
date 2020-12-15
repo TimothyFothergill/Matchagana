@@ -7,14 +7,13 @@
         <link rel="shortcut icon" type="image/x-icon" href="static/Matchagana Favicon.ico"/>
     </head>
     <body>
-        <a class="logo" href="/"><img src="static/Matchagana logo 2.png" alt="Matchagana Logo" height="280" width="640"></a>
-        <div class="float-right">
-            <p>Recent Scores</p><br />
-            <p>{{ ten_most_recent }}</p></div>
+        {% include "header.html" %}
         <div class="content">
+            <div class="float-right">
+                <p>Recent Scores</p><br />
+                <p>{{ ten_most_recent }}</p>
+            </div>
             <h1>Arigatou Gozaimasu!</h1>
-        </div>
-        <div class="content">
             <h2>Thanks for playing!</h2>
             <p>You earned {{ score }} points!</p>
             <p class="smol"><strong>Click the logo to play again.</strong></p>
@@ -25,5 +24,6 @@
             </form>-->
             <p></p>
         </div>
+        {% include "footer.html" %}
     </body>
 </html>
