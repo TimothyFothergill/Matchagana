@@ -19,7 +19,8 @@ img {
 }
 .float-right {
     position: absolute;
-    right: 50px;
+    left: 81%;
+    right: 100px;
     margin-right: 50px;
     padding 100px;
     color: #D4AF37;
@@ -41,9 +42,6 @@ img {
     text-align: center;
     font-size: 20px;
 }
-.logo {
-
-}
 .smol {
     font-size: 14px;
     color: white;
@@ -53,9 +51,7 @@ img {
     color: white;
     font-size: 18px;
     width: 200px;
-<<<<<<< HEAD
     height: 22px;
-=======
     height: 100px;
 }
 .footer{

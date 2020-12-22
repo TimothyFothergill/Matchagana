@@ -2,18 +2,15 @@ import unicodedata
 import random
 import psycopg2
 import os
-from datetime import datetime
-
 from flask import Flask, render_template, request, redirect, flash
+
 app = Flask(__name__)
 app.secret_key = "IbXd)K=gWm/6TAc"
 
 connection = psycopg2.connect(host='matchagana-db', user='matchadb', password='matchadb', port=5432)
+print("You are connected to: " + str(connection))
 
-cursor = connection.cursor()
-
-now = datetime.now()
-current_time = now.strftime("%d/%m/%Y %H:%M:%S")
+sql = """INSERT INTO matchadb (name, score) VALUES (%s, %s);"""
 
 
 @app.route("/api/hiragana", methods=["GET"])
@@ -38,8 +35,6 @@ class GameLoop:
         returned_objects = GameLoop.start_game(GameLoop(), limit, score, match, fail)
         print("RETURNED OBJECTS: " + str(returned_objects))
         if str(returned_objects) == "None":
-            cursor.execute("""INSERT INTO matchadb (name, score) VALUES ('Test Entry', '1000');""")
-            # This execute is in the wrong place, but want to check it happens.
             return GameLoop.end_game(GameLoop(), curr_round.score)
         else:
             next_hiragana = returned_objects[0]
@@ -61,20 +56,29 @@ class GameLoop:
     def end_game(self, score):
         print("RUNNING END_GAME")
         final_score = curr_round.score
-        curr_round.score = 0
         curr_round.rounds = 10
+        ten_most_recent = GameLoop.return_player_scores(GameLoop())
+        return render_template("arigatou.html", score=final_score, ten_most_recent=ten_most_recent)
 
-        # if request.method == "POST":
-        #     p_name = request.form.get("leaderboard")
-        #     GameLoop.player_submit_score(self, p_name, score, "Hiragana")
-        #     return render_template("score-submitted.html")
-        return render_template("arigatou.html", score=final_score)
-
-    @app.route("/score-submitted")
     def player_submit_score(self, p_name, p_score, game_type):
-        # col.insert_one({"player_name": p_name, "score": p_score, "game_type": game_type, "date/time: ": current_time})
+        """ This function handles all of the database logic regarding submission of data. """
+        cursor = connection.cursor()
+        cursor.execute(sql, (p_name, p_score))
+        connection.commit()
+        cursor.close()
         print("Player score submitted to DB")
         return 1
+
+    def return_player_scores(self):
+        """ This function handles returning 10 player scores and displaying them. """
+        cursor = connection.cursor()
+        cursor.execute("""SELECT name, score FROM matchadb ORDER BY id DESC LIMIT 10""")
+        results = cursor.fetchmany(10)
+        result_formatted = '\n'.join(map(str, results)).replace("(", "").replace(")", "")
+        connection.commit()
+        cursor.close()
+        print("Player scores retrieved")
+        return result_formatted
 
     def game_logic(self, score, match, fail):
         print("RUNNING GAME_LOGIC")
@@ -90,7 +94,6 @@ class GameLoop:
         print(str(next_hiragana))
         print("Which of these is the matching Romaji?")
 
-        # TODO: Fix. This catches if there's a duplicate romaji and re-rolls. If it fails, it goes to 3rd slot.
         loopcatcher = 1
         while loopcatcher == 1:
             while random_int_2 == random_int or random_int_2 == random_int_3:
@@ -116,8 +119,6 @@ class GameLoop:
         if romaji_one != correct_hiragana_object.romaji and romaji_two != correct_hiragana_object.romaji \
                 and romaji_three != correct_hiragana_object.romaji:
             romaji_three = correct_hiragana_object.romaji
-
-        # END TODO
 
         print(romaji_one + " " + romaji_two + " " + romaji_three)
 
@@ -158,7 +159,14 @@ class GameLoop:
     @app.route("/start", methods=["GET", "POST"])
     def await_player():
         print("RUNNING AWAIT_PLAYER")
+        ten_most_recent = GameLoop.return_player_scores(GameLoop())
         if request.method == "POST":
+            if request.form.get('leaderboard'):
+                p_name = request.form.get('player_name')
+                if p_name == "":
+                    p_name = "Unknown User"
+                GameLoop.player_submit_score(GameLoop(), p_name, curr_round.score, "Hiragana")
+                return render_template("score-submitted.html", ten_most_recent=ten_most_recent)
             outcome = request.form.get('button')
             print(outcome)
             print(curr_round.correct_hiragana_object.romaji)
