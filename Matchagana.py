@@ -2,15 +2,26 @@ import unicodedata
 import random
 import psycopg2
 import os
+
+from datetime import datetime
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, flash
 
 app = Flask(__name__)
-app.secret_key = "IbXd)K=gWm/6TAc"
 
-connection = psycopg2.connect(host='matchagana-db', user='matchadb', password='matchadb', port=5432)
+load_dotenv()
+
+APP_SECRET = os.getenv('APP_SECRET_KEY')
+PSQL_HOST = os.getenv('POSTGRES_HOST')
+PSQL_PORT = os.getenv('POSTGRES_PORT')
+PSQL_DATABASE = os.getenv('POSTGRES_DB')
+PSQL_USER = os.getenv('POSTGRES_USER')
+PSQL_PASS = os.getenv('POSTGRES_PASSWORD')
+
+connection = psycopg2.connect(dbname=PSQL_DATABASE, host=PSQL_HOST, user=PSQL_USER, password=PSQL_PASS, port=PSQL_PORT)
 print("You are connected to: " + str(connection))
 
-sql = """INSERT INTO matchadb (name, score) VALUES (%s, %s);"""
+sql = f"""INSERT INTO {PSQL_DATABASE} (name, score) VALUES (%s, %s);"""
 
 
 @app.route("/api/hiragana", methods=["GET"])
@@ -174,6 +185,7 @@ class GameLoop:
             if outcome == curr_round.correct_hiragana_object.romaji:
                 curr_round.score += 100
                 print("Your score is: " + str(curr_round.score))
+                app.secret_key = APP_SECRET
                 flash("Correct! +100 points.")
                 if curr_round.rounds > 0:
                     curr_round.rounds -= 1
@@ -184,6 +196,7 @@ class GameLoop:
                 print("Fail")
                 curr_round.score -= 50
                 print("Your score is: " + str(curr_round.score))
+                app.secret_key = APP_SECRET
                 flash("Incorrect! -50 points.")
                 if curr_round.rounds > 0:
                     curr_round.rounds -= 1
