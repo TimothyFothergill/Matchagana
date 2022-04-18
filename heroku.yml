@@ -2,4 +2,4 @@ build:
     docker:
         web: Dockerfile
 run:
-    web: flask run
+    web: python app/Matchagana.py
