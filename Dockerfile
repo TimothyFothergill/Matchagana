@@ -2,4 +2,4 @@ FROM python:latest
 COPY . .
 RUN pip install -r requirements.txt
 EXPOSE 5000
-CMD ["python3", "Matchagana.py"]
+CMD ["python3", "app/Matchagana.py"]
