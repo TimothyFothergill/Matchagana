@@ -4,42 +4,6 @@ services:
     image: matchagana-app
     build:
       context: .
-    links:
-      - matchagana-db
     container_name: matchagana-app
     ports:
       - "5000:5000"
-    networks:
-      - matcha_network
-    depends_on:
-      - matchagana-db
-
-  matchagana-db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_DB: matchadb
-      POSTGRES_USER: matchadb
-      POSTGRES_PASSWORD: matchadb
-    volumes:
-      - matcha_volume:/var/lib/postgresql/data
-    ports:
-    - "5432:5432"
-    expose:
-      - "5432"
-    networks:
-      - matcha_network
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
-    networks:
-      - matcha_network
-
-volumes:
-  matcha_volume: {}
-
-networks:
-  matcha_network:
