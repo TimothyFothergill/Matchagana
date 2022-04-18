@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="content">
+        <p class="hiragana">
+        </p>
+        <br />
+        The below characters are all of the Hiragana characters used in Matchagana and a few extras.
+        <p class="hiragana">
+            {% for hiragana in hiragana_list %}
+                {{hiragana}}
+            {% endfor %}
+        </p>
+    </div>
+{% endblock %}
