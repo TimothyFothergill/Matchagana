@@ -13,7 +13,9 @@
             <h1>{{ message }}</h1>
         {% endfor %}
     </div>
-    {% block content %}{%endblock%}
+    <div class="content" style="font-family:ubuntu">
+        {% block content %}{%endblock%}
+    </div>
     {% include "footer.html" %}
     </body>
 </html>

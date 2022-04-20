@@ -1,15 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-        <div class="content">
-            <h1>Arigatou Gozaimasu!</h1>
-            <h2>Thanks for playing!</h2>
-            <p>You earned {{ score }} points!</p>
-            <p class="smol"><strong>Click the logo to play again.</strong></p>
-            <p> Share your score to the Leaderboards (Coming Soon)!</p>
-            <a href="/"><button class="start_button" name="home-button">Home</button></a>
-            <!-- <form method="POST">
-                <input type="text" name="player_name" />
-                <input type="submit" class="start_button" name="score" value="{{score}}" onclick="score_submitted()">Leaderboard</input>
-            </form> -->
-        </div>
+    <h1>Arigatou Gozaimasu!</h1>
+    <h2>Thanks for playing!</h2>
+    <p>You earned {{ score }} points!</p>
+    <p class="smol"><strong>Click the logo to play again.</strong></p>
+    <p> Share your score to the Leaderboards (Coming Soon)!</p>
+    <a href="/"><button class="start_button" name="home-button">Home</button></a>
 {% endblock %}
