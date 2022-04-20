@@ -90,6 +90,10 @@ def score_submitted():
 def hiragana_char_page():
     return render_template("hiragana.html", hiragana_list=matcha_search.get_hiragana_list())
 
+@app.route("/updates", methods=["GET"])
+def updates():
+    return render_template("updates.html")
+
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
