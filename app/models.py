@@ -16,6 +16,14 @@ class Matchagana:
         self.katakana   = unicodedata.lookup("KATAKANA LETTER " + 
                             str(romaji).upper()
                         )
+        if self.romaji == "si":
+            self.romaji = "shi"
+        if self.romaji == "ti":
+            self.romaji = "chi"
+        if self.romaji == "tu":
+            self.romaji = "tsu"
+        if self.romaji == "hu":
+            self.romaji = "fu"
 
     def small(self, kana):
         match kana:
