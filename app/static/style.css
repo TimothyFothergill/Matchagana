@@ -56,12 +56,10 @@ img {
     font-size: 12px;
     text-align: center;
 }
-a {
-    color: #FFFFFF;
-}
 a:active {
     color: #D4AF37;
 }
 .update-list {
     text-align:left;
+    color: #FFFFFF
 }
