@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Match Hiragana to Romaji</h1>
-    <h2 class="hiragana"> {{ next_hiragana }} </h2>
+    <h1>Match {{ game_mode.capitalize() }} to Romaji</h1>
+    <h2 class="kana"> {{ next_kana }} </h2>
     <form method="POST">
         <p>Choose the correct Romaji</p>
         <input value="{{ romaji_one }}" name="button" type="submit" onclick="await_player()" class="input_button"></input>
@@ -9,6 +9,6 @@
         <input value="{{romaji_three}}" name="button" type="submit" onclick="await_player()" class="input_button"></input>
     </form>
     <br />
-    <p>Choose the correct Romaji to match the Hiragana. Earn points and memorise Hiragana!</p>
+    <p>Choose the correct Romaji to match the {{ game_mode.capitalize() }}. Earn points and memorise {{ game_mode.capitalize() }}!</p>
     <p></p>
 {% endblock %}
