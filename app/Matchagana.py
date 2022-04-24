@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from flask  import Flask, render_template, request, redirect, flash, jsonify, url_for
 
-from models import Matchagana, CurrentRound
+from models import CurrentRound, KanaMode
 from ObjectBuilder import MatchaganaBuilder
 
 import GameLogic
@@ -24,10 +24,13 @@ def matchagana_by_romaji_api(romaji):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    hiragana_character  = matcha_search.get_hiragana_multiples(["ma", "ti"]) +\
-                          matcha_search.get_matchagana("ya").small() +\
-                          matcha_search.get_hiragana_multiples(["ga", "na"])
-    return render_template("index.html", hiragana_character=hiragana_character)
+    hiragana =  matcha_search.get_kana_multiples(["ma", "ti"], KanaMode.HIRAGANA) +\
+                matcha_search.get_kana("ya", KanaMode.MATCHAGANA).small(KanaMode.HIRAGANA) +\
+                matcha_search.get_kana_multiples(["ga", "na"], KanaMode.HIRAGANA)
+    katakana =  matcha_search.get_kana_multiples(["ma", "ti"], KanaMode.KATAKANA) +\
+                matcha_search.get_kana("ya", KanaMode.MATCHAGANA).small(KanaMode.KATAKANA) +\
+                matcha_search.get_kana_multiples(["ga", "na"], KanaMode.KATAKANA)
+    return render_template("index.html", hiragana=hiragana, katakana=katakana)
 
 @app.route("/about", methods=["GET"])
 def about_page():
@@ -37,22 +40,23 @@ def about_page():
 def new_game():
     curr_round.score    = 0
     curr_round.rounds   = 10
+    curr_round.game_mode = request.args.get('game_mode')
     loader()
     return redirect("/game")
 
-@app.route("/game")
+@app.route("/game", methods=["GET"])
 def loader():
     returned_objects = GameLogic.start_game(curr_round.rounds, curr_round.score, curr_round)
     if returned_objects == None:
         end_game()
         return redirect(url_for("end_game"))
     else:
-        next_hiragana   = returned_objects[0]
+        next_kana       = returned_objects[0]
         romaji_one      = returned_objects[1]
         romaji_two      = returned_objects[2]
         romaji_three    = returned_objects[3]
-    return render_template("start.html", next_hiragana=next_hiragana, romaji_one=romaji_one, romaji_two=romaji_two,
-                            romaji_three=romaji_three, score=curr_round.score)
+    return render_template("game.html", next_kana=next_kana, romaji_one=romaji_one, romaji_two=romaji_two,
+                            romaji_three=romaji_three, score=curr_round.score, game_mode=curr_round.game_mode)
 
 @app.route("/game", methods=["POST"])
 def await_player():
@@ -83,7 +87,7 @@ def end_game():
 @app.route("/finished", methods=["GET", "POST"])
 def score_submitted():
     if request.method == "POST":
-        print("Yo dummy")
+        pass
     return index()
 
 @app.route("/hiraganachar", methods=["GET"])

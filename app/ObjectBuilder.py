@@ -1,4 +1,4 @@
-from models import Matchagana
+from models import Matchagana, KanaMode
 
 class MatchaganaBuilder:
     object_list     = []
@@ -56,3 +56,33 @@ class MatchaganaBuilder:
 
     def get_matchagana_list(self):
         return self.object_list
+
+    def get_kana(self, romaji, type = 0):
+        character = next((
+        x for x in self.object_list if x == Matchagana(romaji) ),
+        None)
+        match type:
+            case KanaMode.HIRAGANA:
+                    return character.hiragana
+            case KanaMode.KATAKANA:
+                    return character.katakana
+            case _:
+                return character
+
+    def get_kana_multiples(self, romaji, type = 0):
+        word = ""
+        for r in romaji:
+            match type:
+                case KanaMode.HIRAGANA:
+                    word += next((
+                        x for x in self.object_list if x == Matchagana(r) ),
+                        None).hiragana
+                case KanaMode.KATAKANA:
+                    word += next((
+                        x for x in self.object_list if x == Matchagana(r) ),
+                        None).katakana
+                case 0:
+                    word += next((
+                        x for x in self.object_list if x == Matchagana(r) ),
+                        None)
+        return word

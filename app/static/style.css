@@ -32,7 +32,7 @@ img {
     font-size: 32px;
     border-radius: 20px;
 }
-.hiragana {
+.kana {
     font-size: 56px;
     color: #D4AF37;
 }
@@ -42,7 +42,7 @@ img {
     text-align: center;
     font-size: 20px;
 }
-.smol {
+.sm {
     font-size: 14px;
     color: white;
 }

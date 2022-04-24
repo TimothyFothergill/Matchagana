@@ -1,9 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2 class="hiragana"> {{ hiragana_character }} </h2>
+<section style="width:100%;float:left;">
+<div style="float:left;min-width:250px;white-space:nowrap;">
+    <h2 class="kana"> {{ hiragana }} </h2>
     <h1>Match Hiragana to Romaji</h1>
-    <a href="/start"><button class="start_button" name="start" style="margin-top:12px;">Start Game</button></a>
-    <br />
-    <p>Choose the correct Romaji to match the Hiragana. Earn points and memorise Hiragana!</p>
-    <p class="smol">Looking to practice Hiragana before you play? Check <a href="https://en.wikipedia.org/wiki/Hiragana#Writing_system">Wiki: Hiragana</a></p>
+    <a href="/start?game_mode=hiragana"><button class="start_button" name="start" style="margin-top:12px;white-space:normal;" onclick="new_game()">Match-a-Hiragana</button></a>
+    <br><br><br>
+</div>
+<div style="min-width:250px;white-space:nowrap;">
+    <h2 class="kana"> {{ katakana }} </h2> 
+    <h1>Match Katakana to Romaji</h1>
+    <a href="/start?game_mode=katakana"><button class="start_button" name="start" style="margin-top:12px;white-space:normal;" onclick="new_game()">Match-a-Katakana</button></a>
+    <br><br><br>
+</div>
+</section>
+<div>
+    <p>Choose the correct Romaji to match the kana. Earn points and memorise kana!</p>
+    <p class="sm">Looking to practice Hiragana before you play? Check <a href="https://en.wikipedia.org/wiki/Hiragana#Writing_system">Wiki: Hiragana</a></p>
 {% endblock %}

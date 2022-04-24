@@ -5,11 +5,11 @@ matcha_search = MatchaganaBuilder()
 
 def start_game(rounds, score, curr_round):
     while rounds > 0:
-        returned_objects = game_logic(score, curr_round, game_mode="hiragana")
+        returned_objects = game_logic(score, curr_round)
         return returned_objects
     return None
 
-def game_logic(score, curr_round, game_mode):
+def game_logic(score, curr_round):
     object_length               = len(matcha_search.get_matchagana_list()) - 1
     random_int                  = random.randint(0, object_length)
     correct_object              = matcha_search.get_matchagana_list()[random_int]
@@ -34,7 +34,7 @@ def game_logic(score, curr_round, game_mode):
     romaji_two   = chosen_data[1].romaji
     romaji_three = chosen_data[2].romaji
 
-    match game_mode:
+    match curr_round.game_mode:
         case "hiragana": 
             game_data(correct_object.hiragana, romaji_one, romaji_two, romaji_three, score,
                 correct_object, curr_round)
@@ -42,7 +42,7 @@ def game_logic(score, curr_round, game_mode):
         case "katakana":
             game_data(correct_object.katakana, romaji_one, romaji_two, romaji_three, score,
                 correct_object, curr_round)
-            return correct_object.hiragana, romaji_one, romaji_two, romaji_three
+            return correct_object.katakana, romaji_one, romaji_two, romaji_three
         case _:             
             game_data(correct_object.hiragana, romaji_one, romaji_two, romaji_three, score,
                 correct_object, curr_round)
