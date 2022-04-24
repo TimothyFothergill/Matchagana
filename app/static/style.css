@@ -62,3 +62,6 @@ a {
 a:active {
     color: #D4AF37;
 }
+.update-list {
+    text-align:left;
+}
